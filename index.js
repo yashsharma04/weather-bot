@@ -31,18 +31,18 @@ app.listen(app.get('port'), function() {
 
 
 
-// app.post('/webhook/', function (req, res) {
-//     messaging_events = req.body.entry[0].messaging
-//     for (i = 0; i < messaging_events.length; i++) {
-//         event = req.body.entry[0].messaging[i]
-//         sender = event.sender.id
-//         if (event.message && event.message.text) {
-//             text = event.message.text
-//             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-//         }
-//     }
-//     res.sendStatus(200)
-// })
+app.post('/webhook/', function (req, res) {
+    messaging_events = req.body.entry[0].messaging
+    for (i = 0; i < messaging_events.length; i++) {
+        event = req.body.entry[0].messaging[i]
+        sender = event.sender.id
+        if (event.message && event.message.text) {
+            text = event.message.text
+            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        }
+    }
+    res.sendStatus(200)
+})
 
 var token = "EAAOEcAlTDKABADuCKiLWqcofnTqEnONBe51aN2UTNlbz8r0vMeMQ7sOZBPjPitEJIQcQQMTsvrXhy5alQXikcf5YZBvCrHMZBPtMhRL1il7wF2l5BVROLF2eWqaZAPErElqHKZBKHU4Cx1e7F6d9Ua6zMuZBDFfXZBFbPXElCRsFAZDZD"
 
@@ -68,29 +68,29 @@ function sendTextMessage(sender, text) {
 }
 
 
-var weatherEndpoint = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + location + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';
+// var weatherEndpoint = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + location + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';
 
-app.post('/webhook/', function (req, res) {
-  var messaging_events = req.body.entry[0].messaging;
-  for (i = 0; i < messaging_events.length; i++) {
-    var event = req.body.entry[0].messaging[i];
-    var sender = event.sender.id;
-    if (event.message && event.message.text) {
-      var location = event.message.text;
-      var weatherEndpoint = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + location + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';
-      request({
-        url: weatherEndpoint,
-        json: true
-      }, function(error, response, body) {
-        try {
-          var condition = body.query.results.channel.item.condition;
-          sendTextMessage(sender, "Today is " + condition.temp + " and " + condition.text + " in " + location);
-        } catch(err) {
-          console.error('error caught', err);
-          sendTextMessage(sender, "There was an error.");
-        }
-      });
-    }
-  }
-  res.sendStatus(200);
-});
+// app.post('/webhook/', function (req, res) {
+//   var messaging_events = req.body.entry[0].messaging;
+//   for (i = 0; i < messaging_events.length; i++) {
+//     var event = req.body.entry[0].messaging[i];
+//     var sender = event.sender.id;
+//     if (event.message && event.message.text) {
+//       var location = event.message.text;
+//       var weatherEndpoint = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + location + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';
+//       request({
+//         url: weatherEndpoint,
+//         json: true
+//       }, function(error, response, body) {
+//         try {
+//           var condition = body.query.results.channel.item.condition;
+//           sendTextMessage(sender, "Today is " + condition.temp + " and " + condition.text + " in " + location);
+//         } catch(err) {
+//           console.error('error caught', err);
+//           sendTextMessage(sender, "There was an error.");
+//         }
+//       });
+//     }
+//   }
+//   res.sendStatus(200);
+// });
